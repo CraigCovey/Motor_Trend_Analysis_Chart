@@ -108,7 +108,7 @@ Below the <strong>Choose Smoothing</strong> radio buttons is a section heading <
 
 ### Motor Trend Vehicle Analysis app
 
-[Web link](https://craigcovey.shinyapps.io/Motor_Trend_Chart/)
+[Web link](https://craigcovey.shinyapps.io/Motor_Trend_Analysis_Chart/)
 
 ### Github code
 
