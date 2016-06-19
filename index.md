@@ -66,6 +66,13 @@ The data for the app comes from `mtcars` dataset provided by R. The dataset is t
 
 ```r
 library(knitr)
+```
+
+```
+## Warning: package 'knitr' was built under R version 3.2.5
+```
+
+```r
 data(mtcars)
 kable(head(mtcars))
 ```
@@ -108,7 +115,7 @@ Below the <strong>Choose Smoothing</strong> radio buttons is a section heading <
 
 ### Motor Trend Vehicle Analysis app
 
-[Web link](https://craigcovey.shinyapps.io/Motor_Trend_Chart/)
+[Web link](https://craigcovey.shinyapps.io/Motor_Trend_Analysis_Chart)
 
 ### Github code
 
