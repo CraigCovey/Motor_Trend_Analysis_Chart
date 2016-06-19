@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Motor Trend Vehicle Analysis</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Motor Trend Vehicle Analysis">
+  <meta name="author" content="Craig Covey">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Motor Trend Vehicle Analysis</h1>
+    <h2>Using the Motor Trend interactive chart</h2>
+    <p>Craig Covey<br/>Data Analyst</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <style>
+strong {
+    font-weight: bold;
+}
+em {
+    font-style: italic;
+}
+img {
+
+}
+img[alt="chart"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 375px;
+    padding-top: -30px;
+}
+img[alt="dropdowns"] {
+    height: 200px;
+    width: 175px;
+    padding-left: 30px;
+    padding-top: 20px;
+}
+img[alt="smoothing"] {
+    height: 200px;
+    width: 175px;
+    padding-left: 30px;
+    padding-top: 60px;
+}
+.title-slide {
+    background-color: #FDE3A7;
+}
+h1 {
+    font-family: sans-serif;
+}
+</style>
+
+<h2>Purpose</h2>
+
+<p>The purpose of the <strong>Motor Trend Vehicle Analysis</strong> app is to analysize the <code>mtcars</code> dataset through an interactive chart. The app allows the user to:</p>
+
+<ul>
+<li>Change the X &amp; Y axes to any variable</li>
+<li>Color the chart by any variable</li>
+<li>Add a trend line (Linear Regression or LOESS) with or without confidence interval</li>
+</ul>
+
+<p><img src="assets/img/mtChart.png" alt="chart"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The data for the app comes from <code>mtcars</code> dataset provided by R. The dataset is titled <strong>Motor Trend Car Road Tests</strong> and was extracted from the 1974 <em>Motor Trend</em> US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973-74 models).</p>
+
+<pre><code class="r">library(knitr)
+data(mtcars)
+kable(head(mtcars))
+</code></pre>
+
+<table><thead>
+<tr>
+<th align="left"></th>
+<th align="right">mpg</th>
+<th align="right">cyl</th>
+<th align="right">disp</th>
+<th align="right">hp</th>
+<th align="right">drat</th>
+<th align="right">wt</th>
+<th align="right">qsec</th>
+<th align="right">vs</th>
+<th align="right">am</th>
+<th align="right">gear</th>
+<th align="right">carb</th>
+</tr>
+</thead><tbody>
+<tr>
+<td align="left">Mazda RX4</td>
+<td align="right">21.0</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">110</td>
+<td align="right">3.90</td>
+<td align="right">2.620</td>
+<td align="right">16.46</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td align="left">Mazda RX4 Wag</td>
+<td align="right">21.0</td>
+<td align="right">6</td>
+<td align="right">160</td>
+<td align="right">110</td>
+<td align="right">3.90</td>
+<td align="right">2.875</td>
+<td align="right">17.02</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td align="left">Datsun 710</td>
+<td align="right">22.8</td>
+<td align="right">4</td>
+<td align="right">108</td>
+<td align="right">93</td>
+<td align="right">3.85</td>
+<td align="right">2.320</td>
+<td align="right">18.61</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td align="left">Hornet 4 Drive</td>
+<td align="right">21.4</td>
+<td align="right">6</td>
+<td align="right">258</td>
+<td align="right">110</td>
+<td align="right">3.08</td>
+<td align="right">3.215</td>
+<td align="right">19.44</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td align="left">Hornet Sportabout</td>
+<td align="right">18.7</td>
+<td align="right">8</td>
+<td align="right">360</td>
+<td align="right">175</td>
+<td align="right">3.15</td>
+<td align="right">3.440</td>
+<td align="right">17.02</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">Valiant</td>
+<td align="right">18.1</td>
+<td align="right">6</td>
+<td align="right">225</td>
+<td align="right">105</td>
+<td align="right">2.76</td>
+<td align="right">3.460</td>
+<td align="right">20.22</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Inputs</h2>
+  </hgroup>
+  <article data-timings="">
+    
+<div style='float:left;width:80%;' class='centered'>
+  <h3>Select Axes &amp; Color</h3>
+
+<p>In the sidebar panel on the upper left of the app there are three dropbown boxes titled: <strong>Select X-Axis, Select Y-Axis, and Select Color</strong>. Each dropdown contains a list of all eleven variables of the <code>mtcars</code> dataset. Selecting a variable from the dropdown list changes the respective feature on the chart instantaneously.</p>
+
+<h3>Choose Smoothing</h3>
+
+<p>In the sidebar panel on the middle left of the app under the heading <strong>Choose Smoothing</strong>  are three radio buttons. The default value is <em>None</em>. The second option <em>Linear Regresssion</em> adds a linear regression line with a confidence interval are to chart. The third toption <em>Smooth Curve (LOESS)</em> adds a smooth curve line through the data points.<br>
+Below the <strong>Choose Smoothing</strong> radio buttons is a section heading <strong>Confidence Interval</strong> with a single checkbox. This turns the confidence interval shading area on and off around the smoothing line.</p>
+
+</div>
+<div style='float:right;width:20%;'>
+  <p><img src="assets/img/mtcars_dropdowns.png" alt="dropdowns"></p>
+
+<p><img src="assets/img/mtcars_smoothing.png" alt="smoothing"></p>
+
+</div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Links</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Motor Trend Vehicle Analysis app</h3>
+
+<p><a href="https://craigcovey.shinyapps.io/Motor_Trend_Chart/">Web link</a></p>
+
+<h3>Github code</h3>
+
+<p><a href="https://github.com/CraigCovey/Motor_Trend_Analysis_Chart">link</a></p>
+
+<h3>This presentation</h3>
+
+<p><a href="https://craigcovey.github.io/Motor_Trend_Analysis_Chart/index.html">Web link</a></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Data'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Inputs'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Links'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
